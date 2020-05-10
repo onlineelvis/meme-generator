@@ -7,31 +7,37 @@
 
        <b-row>
 
-            <b-col cols="6">
+            <b-col  md="12" lg='6'>
 
              <div ref="download"> 
-              <vue-draggable-resizable w="0" h="0" @dragging="onDrag">
-                <b class="top-text"    :style="[color,size,focused]"> {{topText}} </b>
+              <vue-draggable-resizable  class="img" w='1' h='1'>
+                <b class="top-text"    :style="[color,size,focusedFont,focusedColor]"> {{topText}} </b>
               </vue-draggable-resizable>
               
                 <img :src="imgToEdit" :alt="`Image to edit`" />
               
-              <vue-draggable-resizable w="0" h="0" @dragging="onDrag">
-                <b class="bottom-text"  :style="[color,size,focused]"> {{bottomText}} </b>
+              <vue-draggable-resizable class="img" w='1' h='1'>
+                <b class="bottom-text"  :style="[color,size,focusedFont,focusedColor]"> {{bottomText}} </b>
                </vue-draggable-resizable>
               </div>
               
 
             </b-col>
 
-            <b-col cols="6">
+            <b-col md="12" lg='6'>
 
                 <input v-model="topText" type="text" placeholder="Top text"> <br> <br>
                 <input v-model="bottomText" type="text" placeholder="Bottom text"> <br> <br>
                 SIZE: <input type="range" min="8" max="30" v-model="fonts"> <br>
-                COLOR: <input type="range" min="0" max="999999" v-model="colors"> <br>
-                 <br> 
+                                
 
+
+
+
+                <select v-model="focused_color">
+                      <option value="" disabled selected>Color</option>
+                      <option v-for="color in available_colors" :key="color" v-bind:value="color" v-bind:style="{color : color}" >{{ color }}</option>
+                </select>
 
                  <select v-model="focused_font">
                       <option value="" disabled selected>Font</option>
@@ -73,11 +79,10 @@ export default {
         bottomText:'',
         fonts: 16,
         colors:'',
-        // famlys: ['Elvis', 'Arturs', 'TOms'],
-        x: 0,
-        y: 0,
         focused_font:'',
-        available_fonts: ["Pacifico", "Open Sans", "monospace", "karumbi", "Courier New","Roboto"]
+        available_fonts: ["Pacifico", "Open Sans", "monospace", "karumbi", "Courier New","Roboto"],
+        focused_color:'',
+        available_colors: ["red","blue","orange","green",'white','purple']
     }
   },
 
@@ -94,19 +99,23 @@ computed: {
     },
 
 
-      focused: function() {
+      focusedFont: function() {
       return {
         fontFamily: this.focused_font
+      }
+    },
+
+
+    focusedColor: function() {
+      return {
+        color: this.focused_color
       }
     }
 
 },
 
 methods: {
-    onDrag: function (x, y) {
-      this.x = x
-      this.y = y
-    },
+
 
     download: function () {
       const node = this.$refs.download
@@ -134,6 +143,8 @@ methods: {
         width: 100%; 
         
     }
-
+.img {
+  border: none !important;
+}
 
 </style>
